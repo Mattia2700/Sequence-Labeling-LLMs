@@ -39,25 +39,40 @@ def dump_conll_file(filepath, sentences, name):
             f.write("\n")
 
 train = os.path.join(os.path.dirname(__file__), "dataset/italian/train.tsv")
-data = read_conll_file(train)
-print(len(data))
+train = read_conll_file(train)
+
+train = Dataset.from_dict({
+    "tokens": [item["tokens"] for item in train],
+    "ner_tags": [item["ner_tags"] for item in train]
+})
 
 test = os.path.join(os.path.dirname(__file__), "dataset/italian/test.tsv")
-data = read_conll_file(test)
-print(len(data))
+test = read_conll_file(test)
 
 test = Dataset.from_dict({
-    "tokens": [item["tokens"] for item in data],
-    "ner_tags": [item["ner_tags"] for item in data]
+    "tokens": [item["tokens"] for item in train],
+    "ner_tags": [item["ner_tags"] for item in train]
 })
 
 random.seed(42)
 idxs = list(range(len(test)))
-idxs_val = random.sample(idxs, int(len(idxs) * 0.2))
-idxs_test = [idx for idx in idxs if idx not in idxs_val]
+idxs_test = random.sample(idxs, int(len(idxs) * 0.2))
+idxs_val = [idx for idx in idxs if idx not in idxs_test]
 
 val = test.select(idxs_val)
 test = test.select(idxs_test)
 
-dump_conll_file(os.path.join(os.path.dirname(__file__), "dataset/italian"), val, "val")
-dump_conll_file(os.path.join(os.path.dirname(__file__), "dataset/italian"), test, "test_new")
+val = Dataset.from_dict({
+    "tokens": [item["tokens"] for item in val],
+    "ner_tags": [item["ner_tags"] for item in val]
+})
+
+test = Dataset.from_dict({
+    "tokens": [item["tokens"] for item in test],
+    "ner_tags": [item["ner_tags"] for item in test]
+})
+
+print(max([len(item) for item in train["tokens"]]), max([len(item) for item in val["tokens"]]), max([len(item) for item in test["tokens"]]))
+
+# dump_conll_file(os.path.join(os.path.dirname(__file__), "dataset/italian"), val, "val")
+# dump_conll_file(os.path.join(os.path.dirname(__file__), "dataset/italian"), test, "test_new")

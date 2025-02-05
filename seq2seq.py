@@ -737,7 +737,7 @@ def seq2seq(
     if accelerator.is_local_main_process:
         wandb.init(
             project=project_name,
-            name=f"{os.path.basename(output_dir)}",
+            name=f"{model_name_or_path.split('/')[-1]}",
             resume=None,
             config={
                 "max_source_length": max_source_length,
