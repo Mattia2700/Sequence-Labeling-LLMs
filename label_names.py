@@ -7,13 +7,13 @@ If we find a label that is in this dictionary, we will replace it with the corre
 Verbalization can help the model to understand the label better.
 """
 _label2name: Dict[str, str] = {
-    "LOC": "Location",
-    "PER": "Person",
-    "ORG": "Organization",
-    "MISC": "Miscellaneous",
-    "TARGET": "Target",
+    # "LOC": "Location",
+    # "PER": "Person",
+    # "ORG": "Organization",
+    # "MISC": "Miscellaneous",
+    # "TARGET": "Target",
     "ety": "ClinicalEntity",
-    "dis": "Disability",
+    # "dis": "Disability",
 }
 
 
